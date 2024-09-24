@@ -19,7 +19,7 @@ function ToDoListForm({ handleSubmit, onChangeTitle, onChangeDuration, titleValu
 					placeholder="Task duration"
 					type="number"
 					name="duration"
-					label="How many hours will this task take?"
+					label="How many hours will this take?"
 					value={durationValue}
 					onChange={onChangeDuration}
 				/>
