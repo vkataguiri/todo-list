@@ -6,7 +6,7 @@ import TaskList from '../tasks/TaskList';
 
 function TodoList() {
 	const storedTasks = JSON.parse(localStorage.getItem('tasks'));
-	const [tasks, setTasks] = useState(storedTasks);
+	const [tasks, setTasks] = useState(storedTasks ? storedTasks : []);
 	const [taskTitle, setTaskTitle] = useState('');
 	const [taskDuration, setTaskDuration] = useState();
 
