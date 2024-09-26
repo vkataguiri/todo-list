@@ -8,9 +8,11 @@ export const TodoListContext = createContext();
 
 function TodoList() {
 	const storedTasks = JSON.parse(localStorage.getItem('tasks'));
-	const [tasks, setTasks] = useState(storedTasks ? storedTasks : []);
+	const [tasks, setTasks] = useState(storedTasks || []);
 	const [taskTitle, setTaskTitle] = useState('');
 	const [taskDuration, setTaskDuration] = useState();
+
+	const charLimit = 20;
 
 	useEffect(() => {
 		localStorage.setItem('tasks', JSON.stringify(tasks));
@@ -30,7 +32,7 @@ function TodoList() {
 		e.preventDefault();
 
 		// check if current task title or duration is null
-		if (taskTitle != '' && taskDuration > 0 && taskTitle.length <= 20 && taskDuration < 25) {
+		if (taskTitle != '' && taskDuration > 0 && taskTitle.length <= charLimit && taskDuration < 25) {
 			setTasks((prevArray) => [
 				...prevArray,
 				{ id: uuid(), title: taskTitle, duration: taskDuration, completed: false },
@@ -50,6 +52,10 @@ function TodoList() {
 		setTasks(newTasks);
 	}
 
+	function updateTask(id, newTitle) {
+		setTasks(tasks.map((task) => (task.id == id ? { ...task, title: newTitle } : task)));
+	}
+
 	function deleteTask(id) {
 		setTasks((prevArray) => prevArray.filter((task) => task.id !== id));
 	}
@@ -57,14 +63,14 @@ function TodoList() {
 	return (
 		<div className="bg-slate-950 text-white p-8 rounded-xl m-10 w-fit">
 			<h1 className="text-4xl font-bold text-center border-b border-slate-500 p-3">Todo List</h1>
-			<ToDoListForm
-				handleSubmit={createTask}
-				onChangeDuration={onChangeDuration}
-				onChangeTitle={onChangeTitle}
-				titleValue={taskTitle}
-				durationValue={taskDuration}
-			/>
-			<TodoListContext.Provider value={deleteTask}>
+			<TodoListContext.Provider value={{ deleteTask, updateTask, charLimit }}>
+				<ToDoListForm
+					handleSubmit={createTask}
+					onChangeDuration={onChangeDuration}
+					onChangeTitle={onChangeTitle}
+					titleValue={taskTitle || ''}
+					durationValue={taskDuration || ''}
+				/>
 				<TaskList tasks={tasks} checkboxFunction={toggleCheckbox} />
 			</TodoListContext.Provider>
 		</div>
