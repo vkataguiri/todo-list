@@ -1,8 +1,10 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, createContext } from 'react';
 import { v4 as uuid } from 'uuid';
 
 import ToDoListForm from '../form/ToDoListForm';
 import TaskList from '../tasks/TaskList';
+
+export const TodoListContext = createContext();
 
 function TodoList() {
 	const storedTasks = JSON.parse(localStorage.getItem('tasks'));
@@ -41,7 +43,6 @@ function TodoList() {
 	function toggleCheckbox(id) {
 		const newTasks = tasks.map((task) => {
 			if (task.id === id) {
-				console.log(!task.completed);
 				return { ...task, completed: !task.completed };
 			}
 			return task;
@@ -63,7 +64,9 @@ function TodoList() {
 				titleValue={taskTitle}
 				durationValue={taskDuration}
 			/>
-			<TaskList tasks={tasks} handleDelete={deleteTask} checkboxFunction={toggleCheckbox} />
+			<TodoListContext.Provider value={deleteTask}>
+				<TaskList tasks={tasks} checkboxFunction={toggleCheckbox} />
+			</TodoListContext.Provider>
 		</div>
 	);
 }
