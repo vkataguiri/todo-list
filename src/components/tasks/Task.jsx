@@ -1,7 +1,13 @@
+import { useContext } from 'react';
+
 import { IoIosCheckmarkCircleOutline, IoIosCheckmarkCircle } from 'react-icons/io';
 import { TbTrash } from 'react-icons/tb';
 
-function Task({ task, handleDelete, checkboxFunction }) {
+import { TodoListContext } from '../pages/TodoList';
+
+function Task({ task, checkboxFunction }) {
+	const handleDelete = useContext(TodoListContext);
+
 	return (
 		<li
 			className="flex bg-violet-900 rounded-md p-4 justify-between w-96 mt-5 hover:bg-violet-950 peer-checked:bg-violet-950 duration-150"
@@ -18,7 +24,7 @@ function Task({ task, handleDelete, checkboxFunction }) {
 				<IoIosCheckmarkCircleOutline className="w-6 h-6 peer-checked:hidden" />
 				<IoIosCheckmarkCircle className="hidden w-6 h-6 peer-checked:block" />
 				<p className="font-bold cursor-pointer peer-checked:line-through peer-checked:opacity-50 duration-500 select-none">
-					{task.title} {task.completed}
+					{task.title}
 				</p>
 			</label>
 			<p className="flex items-center gap-2 cursor-default">
