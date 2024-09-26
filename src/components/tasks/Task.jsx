@@ -43,7 +43,7 @@ function Task({ task, checkboxFunction }) {
 				<IoIosCheckmarkCircle className="hidden w-6 h-6 peer-checked:block" />
 				{editMode ? (
 					<input
-						className="text-black"
+						className="bg-slate-950 outline-none p-2 rounded-md "
 						type="text"
 						placeholder="Task title"
 						value={editTaskTitle}
