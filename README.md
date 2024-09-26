@@ -49,7 +49,6 @@ Access the app using the link provided in your terminal.
 ## 🔜 Next steps
 
 - 📱 Implement a responsive interface
-- ✏️ Enable task editing
 - 🌐 API integration
 
 ## 📬 Contact
