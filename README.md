@@ -6,7 +6,7 @@ This project is a simple task list app built using React, Vite, and Tailwind CSS
 
 ## 🚀 Features
 
-- ➕ Add and remove tasks
+- ➕ Add, edit and remove tasks
 - ✔️ Mark tasks as completed
 - 💾 Local data storage via LocalStorage
 
