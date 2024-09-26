@@ -1,12 +1,30 @@
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 
 import { IoIosCheckmarkCircleOutline, IoIosCheckmarkCircle } from 'react-icons/io';
-import { TbTrash } from 'react-icons/tb';
+import { TbEditCircle, TbEditCircleOff, TbTrash } from 'react-icons/tb';
 
 import { TodoListContext } from '../pages/TodoList';
 
 function Task({ task, checkboxFunction }) {
-	const handleDelete = useContext(TodoListContext);
+	const [editMode, setEditMode] = useState(false);
+	const [editTaskTitle, setEditTaskTitle] = useState(task.title || '');
+	const [editTaskDuration, setEditTaskDuration] = useState(task.duration);
+
+	const { deleteTask, updateTask, charLimit } = useContext(TodoListContext);
+
+	function onChangeTitle(e) {
+		setEditTaskTitle(e.target.value);
+	}
+
+	function toggleEditTask() {
+		if (editTaskTitle.length > charLimit || editTaskTitle.length < 1) {
+			return;
+		}
+
+		setEditMode(!editMode);
+		task.title = editTaskTitle;
+		updateTask(task.id, task.title);
+	}
 
 	return (
 		<li
@@ -23,13 +41,30 @@ function Task({ task, checkboxFunction }) {
 				/>
 				<IoIosCheckmarkCircleOutline className="w-6 h-6 peer-checked:hidden" />
 				<IoIosCheckmarkCircle className="hidden w-6 h-6 peer-checked:block" />
-				<p className="font-bold cursor-pointer peer-checked:line-through peer-checked:opacity-50 duration-500 select-none">
-					{task.title}
-				</p>
+				{editMode ? (
+					<input
+						className="text-black"
+						type="text"
+						placeholder="Task title"
+						value={editTaskTitle}
+						onChange={onChangeTitle}
+					/>
+				) : (
+					<p className="font-bold cursor-pointer peer-checked:line-through peer-checked:opacity-50 duration-500 select-none">
+						{task.title}
+					</p>
+				)}
 			</label>
 			<p className="flex items-center gap-2 cursor-default">
 				<span className="opacity-55 select-none">{task.duration} hours </span>
-				<button onClick={() => handleDelete(task.id)}>
+				<button type="submit" onClick={toggleEditTask}>
+					{editMode ? (
+						<TbEditCircleOff className="opacity-55 text-xl hover:opacity-100 duration-150" />
+					) : (
+						<TbEditCircle className="opacity-55 text-xl hover:opacity-100 duration-150" />
+					)}
+				</button>
+				<button onClick={() => deleteTask(task.id)}>
 					<TbTrash className="opacity-55 text-xl hover:opacity-100 duration-150" />
 				</button>
 			</p>

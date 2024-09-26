@@ -1,6 +1,11 @@
+import { useContext } from 'react';
+
 import Input from '../form/Input';
+import { TodoListContext } from '../pages/TodoList';
 
 function ToDoListForm({ handleSubmit, onChangeTitle, onChangeDuration, titleValue, durationValue }) {
+	const { charLimit } = useContext(TodoListContext);
+
 	return (
 		<>
 			<h2 className="text-center text-xl font-bold mt-5">Insert your next task:</h2>
@@ -13,7 +18,7 @@ function ToDoListForm({ handleSubmit, onChangeTitle, onChangeDuration, titleValu
 					value={titleValue}
 					onChange={onChangeTitle}
 				/>
-				{titleValue.length > 20 && <p className="text-xs text-red-400">You passed the character limit!</p>}
+				{titleValue.length > charLimit && <p className="text-xs text-red-400">You passed the character limit!</p>}
 
 				<Input
 					placeholder="Task duration"
